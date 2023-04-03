@@ -42,11 +42,33 @@ const CreatePost = () => {
     }
   };
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (form.prompt && form.photo) {
+      setLoading(true);
+
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/post", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        });
+
+        await response.json();
+        navigate("/");
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("Please Enter fields");
+    }
+  };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setForm({ ...form, name: value });
+    setForm({ ...form, [e.target.name]: e.target.value });
   };
 
   const handleSurpriseMe = () => {
@@ -69,7 +91,7 @@ const CreatePost = () => {
             labelName="Your name"
             type="text"
             name="name"
-            placeholder="John Doe"
+            placeholder="Ex., John Doe"
             value={form.name}
             handleChange={handleChange}
           />
@@ -78,8 +100,8 @@ const CreatePost = () => {
             labelName="Prompt"
             type="text"
             name="prompt"
-            placeholder={form.prompt}
-            value={form.name}
+            placeholder="An Impressionist oil painting of sunflowers in a purple vase…"
+            value={form.prompt}
             handleChange={handleChange}
             isSurpriseMe
             handleSurpriseMe={handleSurpriseMe}
