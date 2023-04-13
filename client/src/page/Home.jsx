@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Loader, Card, FormField } from "../components";
-import Header from "./Header";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const RenderCards = ({ data, title }) => {
   console.log(data);
@@ -22,23 +23,36 @@ const Home = () => {
   const [searchResults, setSearchResults] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
 
+  const { user } = useSelector((state) => state.auth);
+
   const fetchPosts = async () => {
     setLoading(true);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
     try {
-      const response = await fetch("http://localhost:8080/api/v1/post", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.get(
+        "http://localhost:8080/api/v1/post",
+        config
+      );
+      // const response = await fetch("http://localhost:8080/api/v1/post", {
+      //   method: "GET",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      console.log("response", response);
+      if (response.data.success) {
+        const data = response.data.data;
 
-      if (response.ok) {
-        const result = await response.json();
-        console.log(result);
-        setAllPosts(result.data.reverse());
+        console.log("res", data);
+        setAllPosts(data);
       }
     } catch (error) {
-      console.log(error);
+      console.log("Error", error);
     } finally {
       setLoading(false);
     }
@@ -65,12 +79,12 @@ const Home = () => {
 
   return (
     <>
-      <Header />
       <main className="sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
         <section className="max-w-7x1 mx-auto">
           <div>
             <h1 className="font-extrabold text-[#222328] text-[32px]">
-              The Community Showcase
+              Welcome <span className="text-[#F9D949]">{user?.name}</span> to
+              the Community Showcase
             </h1>
             <p className="mt-2 text-[#6666e75] text-[16px] max-w [500px]">
               Browse through a collection of imaginative and visually stunning

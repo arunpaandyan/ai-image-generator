@@ -1,23 +1,59 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { preview } from "../assets";
 import { getRandomPrompt } from "../utils";
 import { FormField, Loader } from "../components";
-import Header from "./Header";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const CreatePost = () => {
   const navigate = useNavigate();
+  const [postCount, setPostCount] = useState(0);
   const [form, setForm] = useState({
     name: "",
     prompt: "",
     photo: "",
   });
 
+  const { user } = useSelector((state) => state.auth);
+
   const [loading, setLoading] = useState(false);
   const [generatingImg, setGeneratingImg] = useState(false);
 
+  const fetchPosts = async () => {
+    setLoading(true);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+    };
+    try {
+      const response = await axios.get(
+        "http://localhost:8080/api/v1/post",
+        config
+      );
+      console.log("response", response);
+      if (response.data.success) {
+        const data = response.data.data;
+        setPostCount(data.length);
+        console.log("res", data.length);
+      }
+    } catch (error) {
+      console.log("Error", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
   const generateImage = async () => {
-    if (form.prompt) {
+    if (postCount >= 3 && user.subscription === false) {
+      alert("Subscription Needed!");
+    } else if (form.prompt) {
       try {
         setGeneratingImg(true);
         const response = await fetch("http://localhost:8080/api/v1/dalle", {
@@ -46,20 +82,28 @@ const CreatePost = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (form.prompt && form.photo) {
+    if (postCount >= 3 && user.subscription === false) {
+      alert("Subscription Needed!");
+    } else if (form.prompt && form.photo) {
       setLoading(true);
 
-      try {
-        const response = await fetch("http://localhost:8080/api/v1/post", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(form),
-        });
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${user.token}`,
+        },
+      };
+      let fD = { ...form };
+      fD.user = user._id;
 
-        await response.json();
-        navigate("/");
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/v1/post",
+          fD,
+          config
+        );
+        console.log(response.data);
+        navigate("/home");
       } catch (error) {
         console.log(error);
       }
@@ -79,7 +123,6 @@ const CreatePost = () => {
 
   return (
     <>
-      <Header />
       <main className="sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
         <section className="max-w-7xl mx-auto">
           <div>
@@ -87,11 +130,27 @@ const CreatePost = () => {
               Create
             </h1>
             <p className="mt-2 text-[#6666e75] text-[16px] max-w [500px]">
-              Create imaginative and visually stunning images through DALL-E AI
-              and share them with the Community
+              {postCount >= 3 && user.subscription === false ? (
+                <>
+                  <span>
+                    Subscription needed for creating more than 3 posts
+                  </span>
+                  <Link
+                    to="/pay"
+                    className="font-inter font-medium bg-[#FF6000] text-white ml-5 px-4 py-2 rounded-md"
+                  >
+                    Subscribe
+                  </Link>
+                </>
+              ) : (
+                <span>
+                  Create imaginative and visually stunning images through DALL-E
+                  AI and share them with the Community
+                </span>
+              )}
             </p>
           </div>
-          <form className="mt-16 max-w-3xl" onSubmit={handleSubmit}>
+          <form className="mt-16" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-5">
               <FormField
                 labelName="Your name"
@@ -138,6 +197,7 @@ const CreatePost = () => {
               <button
                 type="button"
                 onClick={generateImage}
+                disabled={loading && true}
                 className="text-white bg-green-700 font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               >
                 {generatingImg ? "Generating..." : "Generate"}
@@ -145,14 +205,15 @@ const CreatePost = () => {
             </div>
             <div className="mt-10">
               <p className="mt-2 text-[#666e75] text-[14px]">
-                Once you have created the image you want, you can share it with
-                others in the community
+                Once you have created the image you want, you can Save &
+                download it
               </p>
               <button
                 type="submit"
+                disabled={loading === true && true}
                 className="mt-3 text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto px-5 py-2.5 text-center"
               >
-                {loading ? "Sharing..." : "Share with the community"}
+                {loading ? "Saving..." : "Save to your profile"}
               </button>
             </div>
           </form>

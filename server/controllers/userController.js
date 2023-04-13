@@ -37,6 +37,7 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
+      subscription: user.subscription,
     });
   } else {
     res.status(400);
@@ -58,6 +59,7 @@ const loginUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       token: generateToken(user._id),
+      subscription: user.subscription,
     });
   } else {
     res.status(400);

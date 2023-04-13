@@ -52,7 +52,7 @@ const Login = () => {
 
   if (isLoading) return <Loader />;
   return (
-    <form className="mt-16 max-w-3xl" onSubmit={(e) => onSubmit(e)}>
+    <form className="mt-16" onSubmit={(e) => onSubmit(e)}>
       <div className=" w-full flex flex-col gap-5">
         <input
           type="email"

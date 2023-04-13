@@ -6,6 +6,8 @@ import connectDB from "./mongodb/connect.js";
 import postRoutes from "./routes/postRoutes.js";
 import dalleRoutes from "./routes/dalleRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import paymentRoutes from "./routes/paymentRoutes.js";
+
 import { errorHandler } from "./middlewares/errorMiddleware.js";
 
 dotenv.config();
@@ -18,6 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/v1/post", postRoutes);
 app.use("/api/v1/dalle", dalleRoutes);
 app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/payment", paymentRoutes);
 
 app.use(errorHandler);
 

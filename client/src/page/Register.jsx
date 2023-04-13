@@ -60,7 +60,7 @@ const Register = () => {
   if (isLoading) return <Loader />;
 
   return (
-    <form className="mt-16 max-w-3xl" onSubmit={onSubmit}>
+    <form className="mt-16" onSubmit={onSubmit}>
       <div className="flex flex-col gap-5">
         <input
           type="name"

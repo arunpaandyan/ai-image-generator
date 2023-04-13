@@ -1,32 +1,39 @@
 import React from "react";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
-import { Home, CreatePost, Landing } from "./page";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { Home, CreatePost, Landing, Header } from "./page";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
+import PaymentPage from "./page/PaymentPage";
+import Completion from "./page/Completion";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/create-post"
-          element={
-            <ProtectedRoute>
-              <CreatePost />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <>
+      <BrowserRouter>
+        <Header />
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/create-post"
+            element={
+              <ProtectedRoute>
+                <CreatePost />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/pay" element={<PaymentPage />} />
+          <Route path="/completion" element={<Completion />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 };
 
