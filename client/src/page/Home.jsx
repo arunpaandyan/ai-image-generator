@@ -35,15 +35,9 @@ const Home = () => {
     };
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/post",
+        "https://dall-e-y8h1.onrender.com/api/v1/post",
         config
       );
-      // const response = await fetch("http://localhost:8080/api/v1/post", {
-      //   method: "GET",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
       console.log("response", response);
       if (response.data.success) {
         const data = response.data.data;

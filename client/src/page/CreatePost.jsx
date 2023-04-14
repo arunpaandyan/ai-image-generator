@@ -30,7 +30,7 @@ const CreatePost = () => {
     };
     try {
       const response = await axios.get(
-        "http://localhost:8080/api/v1/post",
+        "https://dall-e-y8h1.onrender.com/api/v1/post",
         config
       );
       console.log("response", response);
@@ -56,15 +56,18 @@ const CreatePost = () => {
     } else if (form.prompt) {
       try {
         setGeneratingImg(true);
-        const response = await fetch("http://localhost:8080/api/v1/dalle", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            prompt: `${form.prompt.toString()}`,
-          }),
-        });
+        const response = await fetch(
+          "https://dall-e-y8h1.onrender.com/api/v1/dalle",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              prompt: `${form.prompt.toString()}`,
+            }),
+          }
+        );
 
         const data = await response.json();
         console.log(data);
@@ -98,7 +101,7 @@ const CreatePost = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/post",
+          "https://dall-e-y8h1.onrender.com/api/v1/post",
           fD,
           config
         );

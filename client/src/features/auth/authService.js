@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "/api/v1/users/";
+const API_URL = "https://dall-e-y8h1.onrender.com/api/v1/users/";
 
 //Register user
 const register = async (userData) => {

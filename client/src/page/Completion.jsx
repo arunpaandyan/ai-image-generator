@@ -22,7 +22,7 @@ const Completion = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8080/api/v1/payment/create-payment-intent/${user._id}`,
+        `https://dall-e-y8h1.onrender.com/api/v1/payment/create-payment-intent/${user._id}`,
         config
       );
       console.log(response.data);
