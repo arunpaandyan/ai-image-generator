@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register, reset } from "../features/auth/authSlice";
-import { Loader } from "../components";
+import { Loader } from ".";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -10,12 +10,13 @@ const Register = () => {
     email: "",
     password: "",
     password2: "",
+    file: "",
   });
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { name, email, password, password2 } = formData;
+  const { name, email, password, password2, file } = formData;
 
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
@@ -40,6 +41,13 @@ const Register = () => {
     }));
   };
 
+  const handleImageChange = (e) => {
+    setFormData((prevState) => ({
+      ...prevState,
+      [e.target.name]: e.target.files[0],
+    }));
+  };
+
   const onSubmit = (e) => {
     e.preventDefault();
 
@@ -52,12 +60,23 @@ const Register = () => {
         password,
       };
 
-      dispatch(register(userData));
-      console.log(userData);
+      const fData = new FormData();
+      fData.append("name", name);
+      fData.append("email", email);
+      fData.append("password", password);
+      fData.append("file", file);
+
+      dispatch(register(fData));
+      console.log(fData);
     }
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center mt-10">
+        <Loader />
+      </div>
+    );
 
   return (
     <form className="mt-16" onSubmit={onSubmit}>
@@ -99,6 +118,16 @@ const Register = () => {
           placeholder="Confirm your password"
           value={password2}
           onChange={(e) => onChange(e)}
+          required
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#4649ff] focus:border-[#4649ff] outline-none block w-full p-3"
+        />
+        <input
+          type="file"
+          id="file"
+          name="file"
+          accept=".png, .jpg, .jpeg"
+          placeholder="Confirm your file"
+          onChange={handleImageChange}
           required
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-[#4649ff] focus:border-[#4649ff] outline-none block w-full p-3"
         />

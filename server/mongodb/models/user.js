@@ -19,6 +19,10 @@ const User = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    photo: {
+      type: String,
+      required: [true, "Please add photo"],
+    },
   },
   {
     timestamps: true,

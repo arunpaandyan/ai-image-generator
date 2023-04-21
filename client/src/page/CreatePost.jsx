@@ -57,7 +57,8 @@ const CreatePost = () => {
       try {
         setGeneratingImg(true);
         const response = await fetch(
-          "https://dall-e-y8h1.onrender.com/api/v1/dalle",
+          //"https://dall-e-y8h1.onrender.com/api/v1/dalle",
+          "/api/v1/dalle",
           {
             method: "POST",
             headers: {
@@ -101,7 +102,8 @@ const CreatePost = () => {
 
       try {
         const response = await axios.post(
-          "https://dall-e-y8h1.onrender.com/api/v1/post",
+          //"https://dall-e-y8h1.onrender.com/api/v1/post",
+          "/api/v1/post",
           fD,
           config
         );
@@ -156,10 +158,10 @@ const CreatePost = () => {
           <form className="mt-16" onSubmit={handleSubmit}>
             <div className="flex flex-col gap-5">
               <FormField
-                labelName="Your name"
+                labelName="Name this Image"
                 type="text"
                 name="name"
-                placeholder="Ex., John Doe"
+                placeholder="Ex., Natural picture"
                 value={form.name}
                 handleChange={handleChange}
               />

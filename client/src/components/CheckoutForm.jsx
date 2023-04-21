@@ -41,12 +41,19 @@ export default function CheckoutForm() {
     <form id="payment-form" onSubmit={handleSubmit}>
       <PaymentElement id="payment-element" />
       <button disabled={isProcessing || !stripe || !elements} id="submit">
-        <span id="button-text">
+        <span id="button-text" className="flex justify-center items-center">
           {isProcessing ? "Processing ... " : "Pay now"}
         </span>
       </button>
       {/* Show any error or success messages */}
-      {message && <div id="payment-message">{message}</div>}
+      {message && (
+        <div
+          id="payment-message"
+          className="flex justify-center items-center text-[#FF6D60]"
+        >
+          {message}
+        </div>
+      )}
     </form>
   );
 }

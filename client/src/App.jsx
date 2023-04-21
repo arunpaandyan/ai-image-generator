@@ -1,10 +1,15 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { Home, CreatePost, Landing, Header } from "./page";
-import ProtectedRoute from "./components/ProtectedRoute";
+import {
+  Home,
+  CreatePost,
+  Landing,
+  PaymentPage,
+  Completion,
+  Chat,
+} from "./page";
+import { Header, ProtectedRoute } from "./components";
 import "./App.css";
-import PaymentPage from "./page/PaymentPage";
-import Completion from "./page/Completion";
 
 const App = () => {
   return (
@@ -31,6 +36,14 @@ const App = () => {
           />
           <Route path="/pay" element={<PaymentPage />} />
           <Route path="/completion" element={<Completion />} />
+          <Route
+            path="/chat"
+            element={
+              <ProtectedRoute>
+                <Chat />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </>

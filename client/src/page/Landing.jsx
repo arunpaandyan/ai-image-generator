@@ -1,7 +1,5 @@
 import { useState } from "react";
-import CurrentTab from "./CurrentTab";
-import Login from "./Login";
-import Register from "./Register";
+import { CurrentTab, Login, Register } from "../components";
 
 const Landing = () => {
   const [currenTab, setCurrentTab] = useState("login");

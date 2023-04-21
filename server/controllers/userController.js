@@ -8,8 +8,13 @@ import asyncHandler from "express-async-handler";
 // access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
+  console.log(req.file);
   console.log(req.body);
-  if (!name || !email || !password) {
+  const photo = req.file.filename;
+
+  let fullUrl = req.protocol + "://" + req.get("host");
+
+  if (!name || !email || !password || !photo) {
     res.status(400);
     throw new Error("Please add required fields");
   }
@@ -30,6 +35,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password: hashedPassword,
+    photo: photo,
   });
   if (user) {
     res.status(201).json({
@@ -38,6 +44,7 @@ const registerUser = asyncHandler(async (req, res) => {
       email: user.email,
       token: generateToken(user._id),
       subscription: user.subscription,
+      photo: fullUrl + "/uploads/" + user.photo,
     });
   } else {
     res.status(400);
@@ -50,6 +57,9 @@ const registerUser = asyncHandler(async (req, res) => {
 // access Public
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
+
+  let fullUrl = req.protocol + "://" + req.get("host");
+  console.log(fullUrl);
   //Check for user email
   const user = await User.findOne({ email });
 
@@ -60,6 +70,7 @@ const loginUser = asyncHandler(async (req, res) => {
       email: user.email,
       token: generateToken(user._id),
       subscription: user.subscription,
+      photo: fullUrl + "/uploads/" + user.photo,
     });
   } else {
     res.status(400);

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import CheckoutForm from "./CheckoutForm";
+import { CheckoutForm } from "../components";
 
 // Make sure to call loadStripe outside of a component’s render to avoid
 // recreating the Stripe object on every render.
@@ -37,7 +37,8 @@ const PaymentPage = () => {
 
   return (
     <>
-      <h1 className="pay-h1">React Stripe and the Payment Element</h1>
+      <h1 className="pay-h1">Stripe payment </h1>
+      <h1 className="pay-h1">(14 &#8377;) </h1>
       {clientSecret && stripePromise && (
         <Elements stripe={stripePromise} options={options}>
           <CheckoutForm />

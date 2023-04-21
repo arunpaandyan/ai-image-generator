@@ -37,7 +37,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   display: block;
-  color: rgb(228, 67, 19);
+  color: rgb(99, 209, 35);
 }
 #payment-form button:hover {
   filter: contrast(115%);
@@ -119,7 +119,7 @@ select {
 }
 
 .button-text {
-  color: rgb(228, 67, 19);
+  color: rgb(40, 187, 21);
 }
 .pay-h1 {
   text-align: center;

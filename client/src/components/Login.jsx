@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { login, reset } from "../features/auth/authSlice";
-import { Loader } from "../components";
+import { Loader } from ".";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -50,7 +50,12 @@ const Login = () => {
     console.log(userData);
   };
 
-  if (isLoading) return <Loader />;
+  if (isLoading)
+    return (
+      <div className="flex justify-center items-center mt-10">
+        <Loader />
+      </div>
+    );
   return (
     <form className="mt-16" onSubmit={(e) => onSubmit(e)}>
       <div className=" w-full flex flex-col gap-5">

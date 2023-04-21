@@ -22,18 +22,31 @@ const Completion = () => {
 
     try {
       const response = await axios.put(
-        `https://dall-e-y8h1.onrender.com/api/v1/payment/create-payment-intent/${user._id}`,
+        //`https://dall-e-y8h1.onrender.com/api/v1/payment/create-payment-intent/${user._id}`,
+        `/api/v1/payment/create-payment-intent/${user._id}`,
         config
       );
       console.log(response.data);
       dispatch(updateplan());
-      navigate("/home");
+      navigate("/create-post");
     } catch (error) {
       console.log(error);
     }
   };
 
-  return <div>Completion</div>;
+  return (
+    <>
+      <main className="sm:p-8 px-4 py-8 w-full bg-[#f9fafe] min-h-[calc(100vh-73px)]">
+        <section className="max-w-7xl mx-auto">
+          <div>
+            <h1 className="font-extrabold text-[#222328] text-[32px]">
+              Thanks for Purchasing !...
+            </h1>
+          </div>
+        </section>
+      </main>
+    </>
+  );
 };
 
 export default Completion;
